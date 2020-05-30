@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inspur.springsecurityoauth_authorizationserver.mapper.UserMapper">
+
+    <resultMap type="com.inspur.springsecurityoauth_authorizationserver.data.SysUser" id="SysUserResultMap">
+        <result column="user_id" property="userId" />
+        <result column="login_name" property="loginName" jdbcType="VARCHAR" javaType="string" />
+        <result column="password" property="password" jdbcType="VARCHAR" javaType="string" />
+        <result column="phonenumber" property="phonenumber" jdbcType="VARCHAR" javaType="string" />
+        <result column="email" property="email" jdbcType="VARCHAR" javaType="string" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </resultMap>
+
+    <select id="findSysUser" parameterType="java.lang.String" resultMap="SysUserResultMap">
+        select * from sys_user where login_name = #{username}
+    </select>
+
+
+    <resultMap type="com.inspur.springsecurityoauth_authorizationserver.data.SysRole" id="SysRoleResultMap">
+        <result column="role_id" property="roleId" />
+        <result column="role_name" property="roleName" jdbcType="VARCHAR" javaType="string" />
+        <result column="role_key" property="roleKey" jdbcType="VARCHAR" javaType="string" />
+<!--        <result column="role_sort" property="roleSort" jdbcType="INTEGER" javaType="int" />-->
+        <result column="data_scope" property="dataScope" jdbcType="CHAR" javaType="string" />
+        <result column="status" property="status" jdbcType="CHAR" javaType="string" />
+        <result column="del_flag" property="delFlag" jdbcType="CHAR" javaType="string" />
+<!--        <result column="create_by" property="createBy" jdbcType="VARCHAR" javaType="string" />-->
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" javaType="string" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" javaType="string" />
+    </resultMap>
+
+    <!-- 根据user id查询用户拥有的role -->
+    <select id="selectSysRolesByUserId" parameterType="java.lang.Long" resultMap="SysRoleResultMap">
+        select
+            *
+        from
+            sys_role r
+        left join
+            sys_user_role ur
+        on
+            r.role_id = ur.role_id
+        where
+            ur.user_id = #{id}
+    </select>
+
+</mapper>
