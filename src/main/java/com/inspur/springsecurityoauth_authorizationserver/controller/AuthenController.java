@@ -40,6 +40,16 @@ public class AuthenController {
                 break;
             }
         }
+
+        // 将uri转换为perm进行鉴权
+        if (!authFlag){
+            Set<String> permsSet = userService.selectPermsByUserId(user.getUserId());
+            String thisPerms = uri.replace("/",":").substring(1);
+            if (permsSet.contains(thisPerms)){
+                authFlag = true;
+            }
+        }
+
         if (authFlag){
             result.put("code",200);
             result.put("message","access!");

@@ -20,4 +20,6 @@ public interface SysMenuMapper {
      * @return 权限列表
      */
     public List<String> selectUrlsByUserId(Long userId);
+
+    List<String> selectPermsByUserId(Long userId);
 }

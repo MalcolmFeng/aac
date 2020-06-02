@@ -47,4 +47,17 @@ public class UserServiceImpl implements UserService {
         }
         return permsSet;
     }
+
+    @Override
+    public Set<String> selectPermsByUserId(Long userId) {
+        List<String> perms = menuMapper.selectPermsByUserId(userId);
+        Set<String> permsSet = new HashSet<>();
+        for (String perm : perms)
+        {
+            if (perm != null && !perm.equals("")) {
+                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+            }
+        }
+        return permsSet;
+    }
 }

@@ -14,4 +14,6 @@ public interface UserService {
     List<SysRole> selectSysRolesByUserId(Long id);
 
     public Set<String> selectUrlsByUserId(Long userId);
+
+    Set<String> selectPermsByUserId(Long userId);
 }
