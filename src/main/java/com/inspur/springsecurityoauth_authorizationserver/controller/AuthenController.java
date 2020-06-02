@@ -3,6 +3,7 @@ package com.inspur.springsecurityoauth_authorizationserver.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.inspur.springsecurityoauth_authorizationserver.data.SysRole;
 import com.inspur.springsecurityoauth_authorizationserver.data.SysUser;
+import com.inspur.springsecurityoauth_authorizationserver.data.SysUserRole;
 import com.inspur.springsecurityoauth_authorizationserver.service.UserService;
 import com.inspur.springsecurityoauth_authorizationserver.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,29 +29,41 @@ public class AuthenController {
         // 解析JWT获取登录用户
         String loginName = JWTUtils.getUserNameByJWT(token);
         SysUser user = userService.getSysUser(loginName);
+        List<SysRole> roles = userService.selectSysRolesByUserId(user.getUserId());
 
-        // 查询权限中的第三方url并鉴权
-        Set<String> urls = userService.selectUrlsByUserId(user.getUserId());
-        JSONObject result = new JSONObject();
-        Boolean authFlag = false;
-        for (String url:urls){
-            if (url.contains(uri)){
-                authFlag = true;
+        Boolean adminFlag = false;
+        for (SysRole role : roles){
+            // 如果是管理员，允许访问所有资源
+            if (role.getRoleId() == 1){
+                adminFlag = true;
                 break;
             }
         }
 
-        // 查询权限中的perms并鉴权
-        if (!authFlag){
-            Set<String> permsSet = userService.selectPermsByUserId(user.getUserId());
-            String thisPerms = uri.replace("/",":").substring(1);
-            if (permsSet.contains(thisPerms)){
-                authFlag = true;
+        Boolean authFlag = false;
+        JSONObject result = new JSONObject();
+        if (!adminFlag){
+            // 查询权限中的第三方url并鉴权
+            Set<String> urls = userService.selectUrlsByUserId(user.getUserId());
+            for (String url:urls){
+                if (url.contains(uri)){
+                    authFlag = true;
+                    break;
+                }
+            }
+
+            // 查询权限中的perms并鉴权
+            if (!authFlag){
+                Set<String> permsSet = userService.selectPermsByUserId(user.getUserId());
+                String thisPerms = uri.replace("/",":").substring(1);
+                if (permsSet.contains(thisPerms)){
+                    authFlag = true;
+                }
             }
         }
 
         // 响应鉴权结果
-        if (authFlag){
+        if (authFlag || adminFlag){
             result.put("code",200);
             result.put("message","access!");
         }else{
