@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 鉴权接口
+ */
 @RequestMapping("/auth")
 @RestController
 public class AuthenController {
@@ -22,16 +25,12 @@ public class AuthenController {
 
     @PostMapping("/authByJWT")
     public String authByJWT(String token,String uri){
-        // 解析jwt,
+        // 解析JWT获取登录用户
         String loginName = JWTUtils.getUserNameByJWT(token);
-
         SysUser user = userService.getSysUser(loginName);
-        List<SysRole> roles = userService.selectSysRolesByUserId(user.getUserId());
 
-        // 查询菜单
+        // 查询权限中的第三方url并鉴权
         Set<String> urls = userService.selectUrlsByUserId(user.getUserId());
-
-        // 判断uri是否在菜单中并构造返回信息
         JSONObject result = new JSONObject();
         Boolean authFlag = false;
         for (String url:urls){
@@ -41,7 +40,7 @@ public class AuthenController {
             }
         }
 
-        // 将uri转换为perm进行鉴权
+        // 查询权限中的perms并鉴权
         if (!authFlag){
             Set<String> permsSet = userService.selectPermsByUserId(user.getUserId());
             String thisPerms = uri.replace("/",":").substring(1);
@@ -50,6 +49,7 @@ public class AuthenController {
             }
         }
 
+        // 响应鉴权结果
         if (authFlag){
             result.put("code",200);
             result.put("message","access!");
@@ -57,7 +57,6 @@ public class AuthenController {
             result.put("code",403);
             result.put("message","access denied!");
         }
-
         return result.toJSONString();
     }
 }
