@@ -1,31 +1,74 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>登陆</title>
+    <title>浪潮健康统一认证中心-登录</title>
+    <meta charset="utf-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="浪潮健康统一认证中心"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <link href="/css/login.css" th:href="@{/css/login.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+
+    <link rel="shortcut icon" href="../static/favicon.ico" th:href="@{favicon.ico}"/>
 </head>
-<body>
-    <h1>来自认证中心的登录页面</h1>
-    <div>
-        <form th:action="@{/login}" method="post">
-            <div>
-                <label>用 户 名: </label>
-                <div>
-                    <input name="username" />
-                </div>
+<body class="bg" style="overflow: hidden">
+    <div id="mydiv" style="width: 800px;height: 400px;margin: 0 auto;background-color: white;display: flex;flex-direction: row;position: absolute;top: calc(50% - 200px);left: calc(50% - 400px)">
+        <div style="flex: 1;display: flex;flex-direction: column;justify-content: center;align-items: center">
+            <div style="font-family: PingFangSC-Semibold;font-size: 28px;color: #000000;text-align: left;">
+                WELCOME
             </div>
-            <div>
-                <label>密　　码: </label>
-                <div>
-                    <input type="password" name="password" />
-                </div>
+            <div style="font-family: PingFangSC-Regular;font-size: 18px;color: #8E8E93;text-align: left;">
+                欢迎登陆大数据平台
             </div>
-            <div>
-                <div>
-                    <button type="submit"> 登 陆 </button>
-                </div>
+
+            <form th:action="@{/login}" method="post" style="width: 100%;text-align: center;margin-top: 20px">
+
+            <div style="margin-top: 10px;width: 100%">
+                <input name="username" class="myInput" style="border: 1px solid #C7C7CC;border-radius: 24px;width: 55%;height: 35px;padding-left: 20px;"/>
             </div>
-        </form>
+            <div style="margin-top: 10px;width: 100%;margin-top: 10px">
+                <input type="password" name="password" style="border: 1px solid #C7C7CC;border-radius: 24px;width: 55%;height: 35px;padding-left: 20px;" />
+            </div>
+            <div style="margin-top: 30px;width: 100%;">
+                    <button type="submit" style="width: 60%;height: 35px;color: white;text-align: center;border-radius: 24px;
+                                                    background: #4AB2F6;border: 1px solid #4AB2F6;border-radius: 24px;
+                                                    font-family: PingFangSC-Regular;font-size: 16px;color: #FFFFFF;line-height: 35px;cursor: pointer;">
+                        登&nbsp;&nbsp;&nbsp;陆
+                    </button>
+            </div>
+            <div style="margin-top: 10px;font-size: 12px;color: firebrick" th:text="${#httpServletRequest.getAttribute('errorMsg')}"></div>
+
+
+            </form>
+            <div style="margin-top: 60px;font-family: PingFangSC-Regular;font-size: 14px;color: #C7C7CC;text-align: left;">
+                浪潮软件集团
+            </div>
+        </div>
+        <div style="flex: 1;display: flex;flex-direction: column;justify-content: center;align-items: center;background-image: linear-gradient(#F7FDFF, #D2EAFF);">
+            <div style="width: 80%;height: 100px;" id="logo"></div>
+            <div style="font-family: PingFangSC-Medium;font-size: 32px;color: #3662B1;letter-spacing: 0;text-align: left;">
+                浪潮健康大数据平台
+            </div>
+            <div style="font-family: PingFangSC-Medium;font-size: 20px;color: #3662B1;letter-spacing: 0;text-align: left;">
+                Inspur Health Certification Center
+            </div>
+        </div>
     </div>
+
 </body>
 </html>
+
+<script type="text/javascript">
+
+    $(window).resize(function(){
+        $(".mydiv").css({
+            position: "absolute",
+            left: ($(window).width() - $(".mydiv").outerWidth())/2,
+            top: ($(window).height() - $(".mydiv").outerHeight())/2
+        });
+    });
+    $(function(){
+        $(window).resize();
+    });
+</script>
