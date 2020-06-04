@@ -37,15 +37,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<String> selectUrlsByUserId(Long userId){
-        List<String> perms = menuMapper.selectUrlsByUserId(userId);
-        Set<String> permsSet = new HashSet<>();
-        for (String perm : perms)
+        List<String> urls = menuMapper.selectUrlsByUserId(userId);
+        Set<String> urlSet = new HashSet<>();
+        for (String url : urls)
         {
-            if (perm != null && !perm.equals("")) {
-                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+            if (url != null && !url.equals("")) {
+                urlSet.addAll(Arrays.asList(url.trim().split(",")));
             }
         }
-        return permsSet;
+        return urlSet;
     }
 
     @Override

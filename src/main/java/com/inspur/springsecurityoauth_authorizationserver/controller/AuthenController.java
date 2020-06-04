@@ -46,11 +46,15 @@ public class AuthenController {
             // 查询权限中的第三方url并鉴权
             Set<String> urls = userService.selectUrlsByUserId(user.getUserId());
             for (String url:urls){
-                String url1 = url.substring(8);
-                String uriShort = url1.substring(url1.indexOf("/"));
-                if (uri.contains(uriShort)){
-                    authFlag = true;
-                    break;
+                try{
+                    String url1 = url.substring(8);
+                    String uriShort = url1.substring(url1.indexOf("/"));
+                    if (uri.contains(uriShort)){
+                        authFlag = true;
+                        break;
+                    }
+                }catch (Exception e){
+                    System.out.println(e.toString());
                 }
             }
 
