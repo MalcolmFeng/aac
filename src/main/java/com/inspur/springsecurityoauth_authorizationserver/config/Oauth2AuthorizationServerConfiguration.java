@@ -43,7 +43,7 @@ public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerC
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private DataSource dataSource;
+    DataSource dataSource;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -63,61 +63,62 @@ public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerC
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        // jwt
-        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+        // JWT Enhancer
         List<TokenEnhancer> enhancers = new ArrayList<>();
         enhancers.add(tokenEnhancer());
         enhancers.add(jwtAccessTokenConverter());
+
+        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         enhancerChain.setTokenEnhancers(enhancers);
 
+
+
         // 数据库管理access_token和refresh_token
-        TokenStore tokenStore = new JdbcTokenStore(dataSource);
+//        TokenStore tokenStore = ;
 
         // 用户信息查询服务
         endpoints
                 .authenticationManager(authenticationManager)
-                .tokenStore(jwtTokenStore())
-                .tokenEnhancer(enhancerChain)
-                .accessTokenConverter(jwtAccessTokenConverter())
                 .userDetailsService(userDetailsService)
-                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);//允许 GET、POST 请求获取 token，即访问端点：oauth/token;
+                // 数据库管理授权信息、授权码
+                .approvalStore(new JdbcApprovalStore(dataSource))
+                .authorizationCodeServices(new JdbcAuthorizationCodeServices(dataSource))
+                // token 相关
+//                .tokenStore(new JdbcTokenStore(dataSource))
+                .tokenEnhancer(enhancerChain)
+                .reuseRefreshTokens(true)
+                .tokenStore(jwtTokenStore())
+                .accessTokenConverter(jwtAccessTokenConverter())
+                // 允许 GET、POST 请求获取 token，即访问端点：oauth/token;
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
 
-        endpoints.reuseRefreshTokens(true);//oauth2登录异常处理
-//        endpoints.exceptionTranslator(new EntfrmWebResponseExceptionTranslator()); //oauth2登录异常处理
-
-
-//        ClientDetailsService clientService = new JdbcClientDetailsService(dataSource);
 //        DefaultTokenServices tokenServices = new DefaultTokenServices();
-//        tokenServices.setTokenStore(tokenStore);
+//        tokenServices.setTokenEnhancer(enhancerChain);
+//        tokenServices.setTokenStore(jwtTokenStore());
+//        tokenServices.setTokenStore(new JdbcTokenStore(dataSource));
 //        tokenServices.setSupportRefreshToken(true);
-//        tokenServices.setClientDetailsService(clientService);
-//        // tokenServices.setAccessTokenValiditySeconds(180);
-//        // tokenServices.setRefreshTokenValiditySeconds(180);
+//        tokenServices.setAccessTokenValiditySeconds(180);
+//        tokenServices.setRefreshTokenValiditySeconds(180);
 //        endpoints.tokenServices(tokenServices);
-
-        // 数据库管理授权码
-        endpoints.authorizationCodeServices(new JdbcAuthorizationCodeServices(dataSource));
-
-        // 数据库管理授权信息
-        ApprovalStore approvalStore = new JdbcApprovalStore(dataSource);
-        endpoints.approvalStore(approvalStore);
     }
 
+    /**
+     * JWT相关 store converter enhancer
+     * @return
+     */
     @Bean
     public TokenStore jwtTokenStore() {
         return new JwtTokenStore(jwtAccessTokenConverter());
     }
-
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-        accessTokenConverter.setSigningKey("entfrm"); //对称加密key
+        accessTokenConverter.setSigningKey("inspurhealth");
         return accessTokenConverter;
     }
-
     @Bean
     public TokenEnhancer tokenEnhancer() {
-        return new JWTTokenEnhancer(); // token增强
+        return new JWTTokenEnhancer();
     }
 
 }
