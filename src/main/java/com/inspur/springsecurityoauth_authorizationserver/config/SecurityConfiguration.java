@@ -1,31 +1,16 @@
 package com.inspur.springsecurityoauth_authorizationserver.config;
 
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -38,19 +23,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // 使用 BCrypt 加密
+        return new BCryptPasswordEncoder();
     }
 
-    public AuthenticationProvider authenticationProvider() {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         authenticationProvider.setHideUserNotFoundExceptions(false);
-        return authenticationProvider;
+        auth.authenticationProvider(authenticationProvider);
+
+        // 测试自定义filter
+//        auth.userDetailsService(userDetailsService);
+//        auth.authenticationProvider(new UserJoinTimeAuthenticationProvider(userDetailsService));
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/css/**", "/js/**", "/fonts/**", "/icon/**", "/favicon.ico");
     }
 
@@ -71,12 +61,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .failureUrl("/login-error")
                     .permitAll().and()
                 .csrf().disable();
-    }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-        auth.authenticationProvider(authenticationProvider());
+        // 自定义filter测试
+//        http.addFilterBefore(new CustomerAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
     }
 
 }
