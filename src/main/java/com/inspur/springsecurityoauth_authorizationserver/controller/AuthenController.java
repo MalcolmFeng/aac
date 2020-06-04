@@ -46,7 +46,9 @@ public class AuthenController {
             // 查询权限中的第三方url并鉴权
             Set<String> urls = userService.selectUrlsByUserId(user.getUserId());
             for (String url:urls){
-                if (url.contains(uri)){
+                String url1 = url.substring(8);
+                String uriShort = url1.substring(url1.indexOf("/"));
+                if (uri.contains(uriShort)){
                     authFlag = true;
                     break;
                 }
@@ -72,4 +74,5 @@ public class AuthenController {
         }
         return result.toJSONString();
     }
+
 }
