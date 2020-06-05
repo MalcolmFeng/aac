@@ -9,16 +9,22 @@ import com.inspur.springsecurityoauth_authorizationserver.service.UserService;
 import com.inspur.springsecurityoauth_authorizationserver.util.JWTUtils;
 import com.inspur.springsecurityoauth_authorizationserver.util.ServletUtils;
 import com.inspur.springsecurityoauth_authorizationserver.util.SpringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
+@Component
 public class JWTTokenEnhancer implements TokenEnhancer {
+
+    @Value("manage.server")
+    private String manageServer;
 
     /**
      * request里只有code
@@ -31,7 +37,7 @@ public class JWTTokenEnhancer implements TokenEnhancer {
         // 设置证书
         Map<String, Object> additionalInfomationMap = new HashMap<>();
         additionalInfomationMap.put("license", "inspurhealth");
-
+        additionalInfomationMap.put("manage.server",manageServer);
         // 设置token的有效期120分钟
         Calendar nowTime = Calendar.getInstance();
         nowTime.add(Calendar.MINUTE, 120);

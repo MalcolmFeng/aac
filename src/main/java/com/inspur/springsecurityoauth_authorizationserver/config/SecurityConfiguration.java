@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/db/**").hasAnyRole("admin","user")
 //                .antMatchers("/user/**").access("hasAnyRole('admin','user')")
                 // 配置不需要认证的地址
-                .antMatchers("/login", "/login-error", "/oauth/authorize", "/oauth/token").permitAll()
+                .antMatchers("/login", "/login-error", "/oauth/authorize", "/oauth/token","/auth/**").permitAll()
                 // 配置只需要认证的地址
                 .anyRequest().authenticated()
                 // 配置登录地址
