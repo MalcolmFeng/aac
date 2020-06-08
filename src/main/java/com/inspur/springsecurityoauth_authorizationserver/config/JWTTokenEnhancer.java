@@ -23,9 +23,11 @@ import java.util.*;
 @Component
 public class JWTTokenEnhancer implements TokenEnhancer {
 
-    @Value("manage.server")
+    @Value("${manage.server}")
     private String manageServer;
 
+    @Value("${jwt.license}")
+    private String license;
     /**
      * request里只有code
      * @param oAuth2AccessToken
@@ -34,10 +36,7 @@ public class JWTTokenEnhancer implements TokenEnhancer {
      */
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken oAuth2AccessToken, OAuth2Authentication oAuth2Authentication) {
-        // 设置证书
-        Map<String, Object> additionalInfomationMap = new HashMap<>();
-        additionalInfomationMap.put("license", "inspurhealth");
-        additionalInfomationMap.put("manage.server",manageServer);
+
         // 设置token的有效期120分钟
         Calendar nowTime = Calendar.getInstance();
         nowTime.add(Calendar.MINUTE, 120);
@@ -52,7 +51,13 @@ public class JWTTokenEnhancer implements TokenEnhancer {
         for (SysRole role : roles){
             rolesSet.add(role.getRoleKey());
         }
+        // 设置用户信息：所属client、角色、签名证书； 设置管理后台的域名；
+        Map<String, Object> additionalInfomationMap = new HashMap<>();
+        additionalInfomationMap.put("clients",sysUser.getClientId());
+        additionalInfomationMap.put("userId",sysUser.getUserId());
         additionalInfomationMap.put("rolesSet",JSON.toJSONString(rolesSet));
+        additionalInfomationMap.put("license", license);
+        additionalInfomationMap.put("manage.server",manageServer);
         ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(additionalInfomationMap);
         return oAuth2AccessToken;
     }

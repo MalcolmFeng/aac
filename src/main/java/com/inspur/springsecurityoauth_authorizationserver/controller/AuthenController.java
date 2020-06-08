@@ -58,9 +58,7 @@ public class AuthenController {
             Set<String> urls = userService.selectUrlsByUserId(user.getUserId());
             for (String url:urls){
                 try{
-                    String url1 = url.substring(8);
-                    String uriShort = url1.substring(url1.indexOf("/"));
-                    if (uri.contains(uriShort)){
+                    if (uri.contains(url)){
                         authFlag = true;
                         break;
                     }

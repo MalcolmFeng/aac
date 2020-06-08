@@ -14,6 +14,8 @@ public class SysRole
     /** 角色ID */
     private Long roleId;
 
+    private String clientId;
+
     /** 角色名称 */
     private String roleName;
 
@@ -163,5 +165,13 @@ public class SysRole
 
     public void setDeptIds(Long[] deptIds) {
         this.deptIds = deptIds;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }

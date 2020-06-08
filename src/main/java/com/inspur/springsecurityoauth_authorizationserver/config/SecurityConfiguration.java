@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider);
 
         // 测试自定义filter
-//        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService);
 //        auth.authenticationProvider(new UserJoinTimeAuthenticationProvider(userDetailsService));
     }
 
@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/db/**").hasAnyRole("admin","user")
 //                .antMatchers("/user/**").access("hasAnyRole('admin','user')")
                 // 配置不需要认证的地址
-                .antMatchers("/login", "/login-error", "/oauth/authorize", "/oauth/token","/auth/**").permitAll()
+                .antMatchers("/login", "/login-error", "/oauth/authorize", "/auth/**").permitAll()
                 // 配置只需要认证的地址
                 .anyRequest().authenticated()
                 // 配置登录地址

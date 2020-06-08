@@ -1,7 +1,9 @@
 package com.inspur.springsecurityoauth_authorizationserver.service;
 
+import com.alibaba.fastjson.JSON;
 import com.inspur.springsecurityoauth_authorizationserver.data.SysRole;
 import com.inspur.springsecurityoauth_authorizationserver.data.SysUser;
+import com.inspur.springsecurityoauth_authorizationserver.util.ServletUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,10 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * 自定义UserDetailsService
@@ -36,6 +36,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        HttpServletRequest request = ServletUtils.getRequest();
+        Map<String, String[]> params = request.getParameterMap();
+        System.out.println(JSON.toJSONString(params));
 
         SysUser user = userService.getSysUser(username);
 

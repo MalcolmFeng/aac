@@ -1,6 +1,7 @@
 package com.inspur.springsecurityoauth_authorizationserver.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -35,6 +36,9 @@ import java.util.List;
  */
 @Configuration
 public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+
+    @Value("${jwt.license}")
+    private String license;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -113,7 +117,7 @@ public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerC
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-        accessTokenConverter.setSigningKey("inspurhealth");
+        accessTokenConverter.setSigningKey(license);
         return accessTokenConverter;
     }
     @Bean

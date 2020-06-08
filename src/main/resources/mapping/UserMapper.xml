@@ -6,6 +6,7 @@
 
     <resultMap type="com.inspur.springsecurityoauth_authorizationserver.data.SysUser" id="SysUserResultMap">
         <result column="user_id" property="userId" />
+        <result column="client_id" property="clientId" />
         <result column="login_name" property="loginName" jdbcType="VARCHAR" javaType="string" />
         <result column="password" property="password" jdbcType="VARCHAR" javaType="string" />
         <result column="phonenumber" property="phonenumber" jdbcType="VARCHAR" javaType="string" />
@@ -20,6 +21,7 @@
 
     <resultMap type="com.inspur.springsecurityoauth_authorizationserver.data.SysRole" id="SysRoleResultMap">
         <result column="role_id" property="roleId" />
+        <result column="client_id" property="clientId" />
         <result column="role_name" property="roleName" jdbcType="VARCHAR" javaType="string" />
         <result column="role_key" property="roleKey" jdbcType="VARCHAR" javaType="string" />
 <!--        <result column="role_sort" property="roleSort" jdbcType="INTEGER" javaType="int" />-->

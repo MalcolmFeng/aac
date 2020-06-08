@@ -16,6 +16,8 @@ public class SysUser
     /** 用户ID */
     private Long userId;
 
+    private String clientId;
+
     /** 部门ID */
     private Long deptId;
 
@@ -245,5 +247,13 @@ public class SysUser
 
     public void setPostIds(Long[] postIds) {
         this.postIds = postIds;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }
