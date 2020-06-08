@@ -52,15 +52,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/db/**").hasAnyRole("admin","user")
 //                .antMatchers("/user/**").access("hasAnyRole('admin','user')")
                 // 配置不需要认证的地址
-                .antMatchers("/login", "/login-error", "/oauth/authorize", "/auth/**").permitAll()
+                .antMatchers("/login", "/login-error", "/oauth/authorize","/auth/unauth","/auth/**").permitAll()
                 // 配置只需要认证的地址
                 .anyRequest().authenticated()
                 // 配置登录地址
                 .and().formLogin()
                     .loginPage("/login")
                     .failureUrl("/login-error")
-                    .permitAll().and()
-                .csrf().disable();
+                    .permitAll()
+                .and().headers().frameOptions().disable()
+                .and().csrf().disable();
 
         // 自定义filter测试
 //        http.addFilterBefore(new CustomerAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);

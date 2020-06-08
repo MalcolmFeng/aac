@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +31,8 @@ public class AuthenController {
      * @return
      */
     @RequestMapping("/unauth")
-    public ModelAndView unauthView(){
+    public ModelAndView unauthView(HttpServletResponse response){
+        response.setHeader("X-Frame-Options", "SAMEORIGIN");// 解决IFrame拒绝的问题
         ModelAndView modelAndView = new ModelAndView("error/unauth");
         return modelAndView;
     }

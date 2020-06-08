@@ -47,9 +47,9 @@ public class JWTTokenEnhancer implements TokenEnhancer {
         UserService userService = SpringUtils.getBean(UserService.class);
         SysUser sysUser = userService.getSysUser(user.getUsername());
         List<SysRole> roles = userService.selectSysRolesByUserId(sysUser.getUserId());
-        Set<String> rolesSet = new HashSet<>();
+        Set<Long> rolesSet = new HashSet<>();
         for (SysRole role : roles){
-            rolesSet.add(role.getRoleKey());
+            rolesSet.add(role.getRoleId());
         }
         // 设置用户信息：所属client、角色、签名证书； 设置管理后台的域名；
         Map<String, Object> additionalInfomationMap = new HashMap<>();
