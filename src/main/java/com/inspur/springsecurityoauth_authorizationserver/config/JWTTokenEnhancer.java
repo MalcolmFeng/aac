@@ -55,6 +55,7 @@ public class JWTTokenEnhancer implements TokenEnhancer {
         Map<String, Object> additionalInfomationMap = new HashMap<>();
         additionalInfomationMap.put("clients",sysUser.getClientId());
         additionalInfomationMap.put("userId",sysUser.getUserId());
+        additionalInfomationMap.put("loginName",sysUser.getLoginName());
         additionalInfomationMap.put("rolesSet",JSON.toJSONString(rolesSet));
         additionalInfomationMap.put("license", license);
         additionalInfomationMap.put("manage.server",manageServer);
