@@ -1,9 +1,6 @@
 package com.inspur.springsecurityoauth_authorizationserver.mapper;
 
-import com.inspur.springsecurityoauth_authorizationserver.data.SysMenu;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 /**

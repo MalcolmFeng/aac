@@ -3,7 +3,6 @@ package com.inspur.springsecurityoauth_authorizationserver.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.inspur.springsecurityoauth_authorizationserver.data.SysRole;
 import com.inspur.springsecurityoauth_authorizationserver.data.SysUser;
-import com.inspur.springsecurityoauth_authorizationserver.data.SysUserRole;
 import com.inspur.springsecurityoauth_authorizationserver.service.UserService;
 import com.inspur.springsecurityoauth_authorizationserver.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;

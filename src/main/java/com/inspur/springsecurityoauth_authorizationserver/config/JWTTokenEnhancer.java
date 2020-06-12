@@ -1,13 +1,9 @@
 package com.inspur.springsecurityoauth_authorizationserver.config;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.inspur.mysdk.IUserInfo;
 import com.inspur.springsecurityoauth_authorizationserver.data.SysRole;
 import com.inspur.springsecurityoauth_authorizationserver.data.SysUser;
 import com.inspur.springsecurityoauth_authorizationserver.service.UserService;
-import com.inspur.springsecurityoauth_authorizationserver.util.JWTUtils;
-import com.inspur.springsecurityoauth_authorizationserver.util.ServletUtils;
 import com.inspur.springsecurityoauth_authorizationserver.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
@@ -17,7 +13,6 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Component

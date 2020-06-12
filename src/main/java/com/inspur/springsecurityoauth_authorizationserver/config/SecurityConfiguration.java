@@ -46,22 +46,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // 1.配置拦截规则
         http.authorizeRequests()
-                // 配置需要角色权限的地址
-//                .antMatchers("/admin/**").hasRole("admin")
-//                .antMatchers("/db/**").hasAnyRole("admin","user")
-//                .antMatchers("/user/**").access("hasAnyRole('admin','user')")
-                // 配置不需要认证的地址
+//                 // ①.配置需要角色权限的地址
+//                .antMatchers("/test/1/**").hasRole("admin")
+//                .antMatchers("/test/2/**").hasAnyRole("admin","user")
+//                .antMatchers("/test/3**").access("hasAnyRole('admin','user')")
+//                // ②.token的scope配置（示例）
+//                .antMatchers("/user/info").access("#oauth2.hasScope('get_user_info')")
+                // ③.配置不需要认证的地址
                 .antMatchers("/login", "/login-error", "/oauth/authorize","/auth/unauth","/auth/**").permitAll()
-                // 配置只需要认证的地址
+                // ④.配置只需要认证,不需要鉴权的地址
                 .anyRequest().authenticated()
-                // 配置登录地址
-                .and().formLogin()
+
+                // 2.配置登录地址
+                .and()
+                .formLogin()
                     .loginPage("/login")
                     .failureUrl("/login-error")
                     .permitAll()
-                .and().headers().frameOptions().disable()
-                .and().csrf().disable();
+
+                // 3.请求头配置
+                .and()
+                .headers().frameOptions().disable()
+
+                // 4.CSRF请求配置
+                .and()
+                .csrf().disable();
 
         // 自定义filter测试
 //        http.addFilterBefore(new CustomerAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
