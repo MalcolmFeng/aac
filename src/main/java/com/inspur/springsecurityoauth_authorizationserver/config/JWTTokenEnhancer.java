@@ -53,7 +53,6 @@ public class JWTTokenEnhancer implements TokenEnhancer {
         additionalInfomationMap.put("loginName",sysUser.getLoginName());
         additionalInfomationMap.put("user_name",sysUser.getLoginName());
         additionalInfomationMap.put("rolesSet",JSON.toJSONString(rolesSet));
-        additionalInfomationMap.put("license", license);
         additionalInfomationMap.put("manage.server",manageServer);
         ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(additionalInfomationMap);
         return oAuth2AccessToken;

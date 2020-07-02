@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @SpringBootApplication
 public class SpringsecurityoauthAuthorizationserverApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(SpringsecurityoauthAuthorizationserverApplication.class, args);
     }
 
