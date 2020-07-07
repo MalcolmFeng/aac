@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                // ②.token的scope配置（示例）
 //                .antMatchers("/user/info").access("#oauth2.hasScope('get_user_info')")
                 // ③.配置不需要认证的地址
-                .antMatchers("/login", "/login-error", "/oauth/authorize","/auth/unauth","/auth/**").permitAll()
+                .antMatchers("/login","loginout", "/login-error", "/oauth/authorize","/auth/unauth","/auth/**").permitAll()
                 // ④.配置只需要认证,不需要鉴权的地址
                 .anyRequest().authenticated()
 
@@ -63,8 +63,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                     .loginPage("/login")
+//                    .successHandler(new SessionClearHandler())
                     .failureUrl("/login-error")
                     .permitAll()
+
+                // 退出登录接口与handler的实现
+                .and()
+                .logout()
+                .logoutUrl("/loginout") //默认logout
+                .logoutSuccessHandler(new LogoutSuccessHandler())
+                .deleteCookies("JSESSIONID")//清楚cook键值
 
                 // 3.请求头配置
                 .and()
