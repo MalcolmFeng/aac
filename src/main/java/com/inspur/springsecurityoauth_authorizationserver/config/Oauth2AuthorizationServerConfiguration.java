@@ -51,7 +51,7 @@ public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerC
      */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.checkTokenAccess("hasAuthority('ROLE_TRUSTED_CLIENT')");
+        security.allowFormAuthenticationForClients().checkTokenAccess("hasAuthority('ROLE_TRUSTED_CLIENT')");
     }
 
     /**
