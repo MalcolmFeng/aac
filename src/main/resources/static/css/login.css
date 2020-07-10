@@ -22,3 +22,8 @@ html,body{
     background: url("patterns/logo@3x.png") no-repeat center;
     background-size: 100%;
 }
+
+#logo-tj{
+    background: url("patterns/logo@tj.png") no-repeat center;
+    background-size: 100%;
+}
