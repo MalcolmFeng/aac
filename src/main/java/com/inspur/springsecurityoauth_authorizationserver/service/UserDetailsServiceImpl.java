@@ -42,7 +42,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         SysUser user = userService.getSysUser(username);
 
+        // 如果用户不存在
         if (user == null) {
+            throw new UsernameNotFoundException("Username not found: " + username);
+        }
+
+        // 如果用户状态不可用
+        if (user.getStatus().equals("1")) {
             throw new UsernameNotFoundException("Username not found: " + username);
         }
 
