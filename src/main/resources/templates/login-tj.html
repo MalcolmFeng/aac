@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>天津健康医疗大数据超级平台-登录</title>
+    <meta name="description" content="天津健康医疗大数据超级平台"/>
+    <meta charset="utf-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <link href="/css/login.css" th:href="@{/css/login.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+
+    <link rel="shortcut icon" href="../static/favicon.ico" th:href="@{favicon.ico}"/>
+</head>
+<body class="bg" style="overflow: hidden">
+    <div id="mydiv" style="width: 800px;height: 400px;margin: 0 auto;background-color: white;display: flex;flex-direction: row;position: absolute;top: calc(50% - 200px);left: calc(50% - 400px)">
+        <div style="flex: 1;display: flex;flex-direction: column;justify-content: center;align-items: center">
+            <div style="font-family: PingFangSC-Semibold;font-size: 28px;color: #000000;text-align: left;">
+                WELCOME
+            </div>
+            <div style="font-family: PingFangSC-Regular;font-size: 18px;color: #8E8E93;text-align: left;">
+                欢迎访问大数据平台
+            </div>
+
+            <form th:action="@{/login}" method="post" style="width: 100%;text-align: center;margin-top: 20px">
+
+            <div style="margin-top: 10px;width: 100%">
+                <input name="username" class="myInput" style="border: 1px solid #C7C7CC;border-radius: 24px;width: 55%;height: 35px;padding-left: 20px;"/>
+            </div>
+            <div style="margin-top: 10px;width: 100%;margin-top: 10px">
+                <input type="password" name="password" style="border: 1px solid #C7C7CC;border-radius: 24px;width: 55%;height: 35px;padding-left: 20px;" />
+            </div>
+            <div style="margin-top: 30px;width: 100%;">
+                    <button type="submit" style="width: 60%;height: 35px;color: white;text-align: center;border-radius: 24px;
+                                                    background: #4AB2F6;border: 1px solid #4AB2F6;border-radius: 24px;
+                                                    font-family: PingFangSC-Regular;font-size: 16px;color: #FFFFFF;line-height: 35px;cursor: pointer;">
+                        登&nbsp;&nbsp;录
+                    </button>
+            </div>
+            <div>
+<!--                <a href="http://localhost:7000/system/user/register" style="font-size: 11px;margin-top: 5px;">注册</a>-->
+<!--                <a href="http://172.19.221.76:7000/system/user/register" style="font-size: 11px;margin-top: 5px;">注册</a>-->
+<!--                <a href="http://172.26.212.224:7000/admin/system/user/register" style="font-size: 11px;margin-top: 5px;">注册</a>-->
+            </div>
+            <div style="margin-top: 10px;font-size: 12px;color: firebrick" th:text="${#httpServletRequest.getAttribute('errorMsg')}"></div>
+
+            </form>
+
+            <div style="margin-top: 60px;font-family: PingFangSC-Regular;font-size: 14px;color: #C7C7CC;text-align: left;">
+                天津市卫生健康委员会
+            </div>
+        </div>
+        <div style="flex: 1;display: flex;flex-direction: column;justify-content: center;align-items: center;background-image: linear-gradient(#F7FDFF, #D2EAFF);">
+            <div style="width: 80%;height: 100px;" id="logo-tj"></div>
+            <div style="font-family: PingFangSC-Medium;font-size: 28px;color: #3662B1;letter-spacing: 0;text-align: left;margin-top: 10px;">
+                天津健康医疗大数据超级平台
+            </div>
+            <div style="font-family: PingFangSC-Medium;margin-top: 20px;font-size: 20px;color: #3662B1;letter-spacing: 0;text-align: left;">
+                Tianjin Health Certification Center
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $(window).resize(function(){
+        $(".mydiv").css({
+            position: "absolute",
+            left: ($(window).width() - $(".mydiv").outerWidth())/2,
+            top: ($(window).height() - $(".mydiv").outerHeight())/2
+        });
+    });
+    $(function(){
+        $(window).resize();
+    });
+</script>
