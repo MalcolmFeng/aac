@@ -39,11 +39,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        auth.authenticationProvider(new UserJoinTimeAuthenticationProvider(userDetailsService));
     }
 
+    /**
+     * 排除对静态资源的过滤
+     * @param web
+     */
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/css/**", "/js/**", "/fonts/**", "/icon/**", "/favicon.ico");
     }
 
+    /**
+     * http资源的安全规则配置
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 1.配置拦截规则
@@ -55,8 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                // ②.token的scope配置（示例）
 //                .antMatchers("/user/info").access("#oauth2.hasScope('get_user_info')")
                 // ③.配置不需要认证的地址
-                .antMatchers("/login","loginout", "/login-error", "/oauth/authorize","/auth/unauth","/auth/**").permitAll()
-                // ④.配置只需要认证,不需要鉴权的地址
+                .antMatchers("/login","loginout", "/login-error", "/oauth/authorize","/auth/unauth","/auth/**","/check_client").permitAll()
+                // ④.配置需要认证的地址
                 .anyRequest().authenticated()
 
                 // 2.配置登录地址
@@ -70,9 +79,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // 退出登录接口与handler的实现
                 .and()
                 .logout()
-                .logoutUrl("/loginout") //默认logout
-                .logoutSuccessHandler(new LogoutSuccessHandler())
-                .deleteCookies("JSESSIONID")//清楚cook键值
+                    .logoutUrl("/loginout") //默认logout
+                    .logoutSuccessHandler(new LogoutSuccessHandler())
+                    .deleteCookies("JSESSIONID")//清楚cook键值
 
                 // 3.请求头配置
                 .and()

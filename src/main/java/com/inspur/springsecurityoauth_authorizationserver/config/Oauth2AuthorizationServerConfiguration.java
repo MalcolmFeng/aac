@@ -55,7 +55,7 @@ public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerC
     }
 
     /**
-     * //客户端配置 使用jdbc数据库存储
+     * 客户端类型配置 使用jdbc数据库存储
      * @param clients
      * @throws Exception
      */
@@ -64,13 +64,48 @@ public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerC
         clients.withClientDetails(new JdbcClientDetailsService(dataSource));
     }
 
+    /**
+     * JWT相关 store
+     * @return
+     */
+    @Bean
+    public TokenStore jwtTokenStore() {
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    /**
+     * JWT增强器一：转换器（配置签名）
+     * @return
+     */
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
+        // JWT统一的签名
+        accessTokenConverter.setSigningKey(license);
+        return accessTokenConverter;
+    }
+
+    /**
+     * JWT增强器二：自定义payload属性
+     * @return
+     */
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new JWTTokenEnhancer();
+    }
+
+    /**
+     * 配置
+     * @param endpoints
+     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        // JWT Enhancer
+        // JWT 所有 Enhancer
         List<TokenEnhancer> enhancers = new ArrayList<>();
         enhancers.add(tokenEnhancer());
         enhancers.add(jwtAccessTokenConverter());
 
+        // 将EnhancerList添加到 chain中
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         enhancerChain.setTokenEnhancers(enhancers);
 
@@ -105,23 +140,6 @@ public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerC
 //        endpoints.tokenServices(tokenServices);
     }
 
-    /**
-     * JWT相关 store converter enhancer
-     * @return
-     */
-    @Bean
-    public TokenStore jwtTokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-        accessTokenConverter.setSigningKey(license);
-        return accessTokenConverter;
-    }
-    @Bean
-    public TokenEnhancer tokenEnhancer() {
-        return new JWTTokenEnhancer();
-    }
+
 
 }

@@ -14,14 +14,14 @@ public class LoginController {
 
     @GetMapping("/login")
     public ModelAndView login() {
-        return new ModelAndView("login");
+        return new ModelAndView("login-tj");
     }
 
     @GetMapping("/login-error")
     public ModelAndView loginError( Model model) {
         model.addAttribute("loginError", true);
         model.addAttribute("errorMsg", "登陆失败，账号或者密码错误！");
-        return new ModelAndView("login", "userModel", model);
+        return new ModelAndView("login-tj", "userModel", model);
     }
 
 }
